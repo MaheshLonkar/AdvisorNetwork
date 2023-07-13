@@ -14,7 +14,10 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UserRegistrationService {
+	
+	@Autowired
     private final UserRepository userRepository;
+	@Autowired
     private final JwtTokenProvider jwtTokenProvider;
 
     @Autowired

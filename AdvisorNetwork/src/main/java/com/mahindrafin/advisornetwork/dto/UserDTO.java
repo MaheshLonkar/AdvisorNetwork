@@ -8,7 +8,7 @@ public class UserDTO {
 
     // Constructors, getters, and setters
 
-    public UserDTO() {
+    public UserDTO(String string, String string2, String string3) {
     }
 
     public UserDTO(Long id, String name, String email) {

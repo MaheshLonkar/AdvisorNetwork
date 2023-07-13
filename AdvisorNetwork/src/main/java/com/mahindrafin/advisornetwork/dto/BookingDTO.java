@@ -10,7 +10,7 @@ public class BookingDTO {
 
     // Constructors, getters, and setters
 
-    public BookingDTO() {
+    public BookingDTO(LocalDateTime localDateTime) {
     }
 
     public BookingDTO(Long id, String advisorName, String advisorPhotoUrl, LocalDateTime bookingTime) {

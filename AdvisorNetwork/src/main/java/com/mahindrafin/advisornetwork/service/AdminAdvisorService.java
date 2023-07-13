@@ -14,10 +14,20 @@ import com.mahindrafin.advisornetwork.security.JwtTokenProvider;
 
 @Service
 public class AdminAdvisorService {
+	
+	@Autowired
     private final AdvisorRepository advisorRepository;
+	
+	@Autowired
     private final JwtTokenProvider jwtTokenProvider;
+	
+	
 
-    @Autowired
+   
+
+	
+
+	@Autowired
     public AdminAdvisorService(AdvisorRepository advisorRepository, JwtTokenProvider jwtTokenProvider) {
         this.advisorRepository = advisorRepository;
         this.jwtTokenProvider = jwtTokenProvider;

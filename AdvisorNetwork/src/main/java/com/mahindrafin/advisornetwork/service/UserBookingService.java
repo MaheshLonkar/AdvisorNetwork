@@ -14,9 +14,12 @@ import com.mahindrafin.advisornetwork.security.JwtTokenProvider;
 
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserBookingService {
+	
+	@Autowired
     private final BookingRepository bookingRepository;
     private final AdvisorRepository advisorRepository;
     private final UserRepository userRepository;
@@ -47,8 +50,16 @@ public class UserBookingService {
         bookingRepository.save(booking);
     }
 
-    public List<Booking> getAllBookings() {
-        List<Booking> bookings = bookingRepository.findAll();
-        return bookings;
+    public List<BookingDTO> getAllBookedCalls(Long userId) {
+        // Retrieve all booked calls for the given user from the database
+        List<Booking> bookings = bookingRepository.findByUserId(userId);
+
+        // Map the entities to DTOs
+        List<BookingDTO> bookingDTOs = bookings.stream()
+                .map(booking -> new BookingDTO(booking.getBookingTime()))
+                .collect(Collectors.toList());
+
+        return bookingDTOs;
+    
     }
 }
