@@ -2,10 +2,12 @@ package com.mahindrafin.advisornetwork.service;
 
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.mahindrafin.advisornetwork.dto.AdvisorDTO;
 import com.mahindrafin.advisornetwork.model.Advisor;
 import com.mahindrafin.advisornetwork.repository.AdvisorRepository;
 import com.mahindrafin.advisornetwork.security.JwtTokenProvider;
@@ -21,13 +23,15 @@ public class AdminAdvisorService {
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
-    public String addAdvisor(String name, String photoUrl) {
+    public String addAdvisor(AdvisorDTO advisorDTO) {
         // Validate required fields
-        if (name == null || photoUrl == null) {
+        if (advisorDTO.getName() == null || advisorDTO.getPhotoUrl() == null) {
             throw new IllegalArgumentException("Advisor name and photo URL are required");
         }
 
-        Advisor advisor = new Advisor(name, photoUrl);
+        Advisor advisor = new Advisor();
+        advisor.setName(advisorDTO.getName());
+        advisor.setPhotoUrl(advisorDTO.getPhotoUrl());
         advisorRepository.save(advisor);
 
         // Generate JWT authentication token
@@ -38,6 +42,11 @@ public class AdminAdvisorService {
 
     public List<Advisor> getAllAdvisors() {
         List<Advisor> advisors = advisorRepository.findAll();
+        
+        // Map the entities to DTOs
+        List<AdvisorDTO> advisorDTOs = advisors.stream()
+                .map(advisor -> new AdvisorDTO(advisor.getId(),advisor.getName(), advisor.getPhotoUrl()))
+                .collect(Collectors.toList());
         return advisors;
     }
 }

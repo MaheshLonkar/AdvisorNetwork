@@ -1,18 +1,18 @@
 package com.mahindrafin.advisornetwork.service;
 
-i
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.mahindrafin.advisornetwork.model.Advisor;
+import com.mahindrafin.advisornetwork.dto.BookingDTO;
+
 import com.mahindrafin.advisornetwork.model.Booking;
-import com.mahindrafin.advisornetwork.model.User;
+
 import com.mahindrafin.advisornetwork.repository.AdvisorRepository;
 import com.mahindrafin.advisornetwork.repository.BookingRepository;
 import com.mahindrafin.advisornetwork.repository.UserRepository;
 import com.mahindrafin.advisornetwork.security.JwtTokenProvider;
 
-import java.time.LocalDateTime;
+
 import java.util.List;
 
 @Service
@@ -35,15 +35,15 @@ public class UserBookingService {
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
-    public void bookCall(Long userId, Long advisorId, LocalDateTime bookingTime) {
-        // Retrieve user and advisor entities
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-        Advisor advisor = advisorRepository.findById(advisorId)
-                .orElseThrow(() -> new RuntimeException("Advisor not found"));
-
+    public void bookCall(Long userId, Long advisorId, BookingDTO bookingDTO) {
+    	if (bookingDTO.getBookingTime() == null ) {
+            throw new IllegalArgumentException("Booking time is required");
+        }
         // Create a new booking
-        Booking booking = new Booking(bookingTime, advisor, user);
+    	Booking booking = new Booking();
+        booking.setId(userId);
+        booking.setId(advisorId);
+        booking.setBookingTime(bookingDTO.getBookingTime());
         bookingRepository.save(booking);
     }
 
